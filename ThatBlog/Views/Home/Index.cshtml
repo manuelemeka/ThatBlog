@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@if (Request.IsAuthenticated)
+{
+    <div class="jumbotron">
+        <h1>That.Blog</h1>
+        <p class="lead">That.Blog is a free blog platform for sharing great stories and  personal experiences. on ThatBlog everybody is a writer and a reader.</p>
+        @if (@User.IsInRole("Author"))
+        {
+            <p>
+                @Html.ActionLink("Publish A Blog", "Create", "Blog", routeValues: null, htmlAttributes: new
+           {
+               id = "registerLink",
+               @class = "btn btn-primary btn-lg"
+           })
+            </p>
+        }
+    </div>
+
+
+    
+  
+}
+else
+{
+
+    <div class="jumbotron">
+        <h1>That.Blog</h1>
+        <p class="lead">Please Login or SignUp to get Access to super blogs from wonderful Authors</p>
+        <p>
+            @Html.ActionLink("Get Started", "Register", "Account", routeValues: null, htmlAttributes: new
+            {
+                id = "registerLink",
+           @class = "btn btn-primary btn-lg"
+            })
+        </p>
+    </div>
+
+}

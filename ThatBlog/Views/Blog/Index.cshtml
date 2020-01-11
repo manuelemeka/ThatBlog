@@ -1,0 +1,104 @@
+﻿@model ThatBlog.ViewModels.CompositeModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Index";
+}
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("Author"))
+    {
+        <br />
+        <br />
+        <p style="text-align:center; font-size:20px; color:gray;">@ViewBag.Report</p>
+        <h2 style=" color:gray;">My Blogs</h2>
+
+        <p>
+            @Html.ActionLink("Publish A Blog", "Create")
+        </p>
+        if (Model.UserBlog.Count > 0)
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Blog
+                    </th>
+                    <th>
+                        Menu
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model.UserBlog)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.title)
+                        </td>
+                        <td>
+                            @{ string blogless = "";
+                                if (item.blog.Length > 40)
+                                {
+                                    blogless = item.blog.Substring(0, 40);
+                                }
+                                else
+                                {
+                                    blogless = item.blog;
+                                }
+                            }
+                            @Html.DisplayFor(modelItem => blogless)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+            <h2>You have not Written any blog</h2>
+        }
+
+        <hr />
+}
+    <h2 style=" color:gray;">Blogs on That.Blog</h2>
+    <div class="row">
+        @foreach (var item in Model.DomainBlog)
+        {
+        <div class="col-md-4">
+            <h2>@Html.DisplayFor(modelItem => item.title)</h2>
+            <img src="@Html.DisplayFor(modelItem => item.photo)" style="width:50%;height:400%; " />
+            <p>
+                @{ string blogless = "";
+                    if (item.blog.Length > 40)
+                    {
+                        blogless = item.blog.Substring(0, 100);
+                    }
+                    else
+                    {
+                        blogless = item.blog;
+                    }
+                }
+                @Html.DisplayFor(modelItem => blogless)
+            </p>
+            <p>
+                @Html.ActionLink("Read Now", "Details", new { id = item.id })
+
+            </p>
+        </div>
+        }
+
+
+
+    </div>
+}
+else
+{
+    <h2>Join ThatBlog to start enjoying wonderful writeUp</h2>
+}
